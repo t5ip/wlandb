@@ -1,0 +1,11 @@
+# Use virtualenv 
+pip install virtualenv
+# Create virtualevn under current directory.
+# Don't use any preinstalled packages from the OS.
+virtualenv virtenv --no-site-packages
+# Activate the virtual environment
+source virtenv/bin/activate
+# Note: to deactivate virtualenv use "deactivate" command
+# Install sqlalchemy 
+pip install sqlalchemy
+

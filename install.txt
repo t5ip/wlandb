@@ -6,6 +6,5 @@ virtualenv virtenv --no-site-packages
 # Activate the virtual environment
 source virtenv/bin/activate
 # Note: to deactivate virtualenv use "deactivate" command
-# Install sqlalchemy 
-pip install sqlalchemy
-
+#install mariadb-client mariadb-server mariadbclient-dev python-dev libssl libcrypto libssl-dev libcrypto-dev
+pip install mysql-python

@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS access_points (
 	cipher VARCHAR(8),
 	authentication VARCHAR(8),
 	essid VARCHAR(32),
-	PRIMARY KEY (access_point_id, bssid, essid)
+	PRIMARY KEY (access_point_id),
+    UNIQUE INDEX (bssid, essid)
 ) ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS stations (
@@ -21,5 +22,6 @@ CREATE TABLE IF NOT EXISTS stations (
 	last_time_seen DATETIME,
  	bssid VARCHAR(18) NOT NULL,
 	probed_essids TEXT,
-	PRIMARY KEY (station_id, station_mac)
+	PRIMARY KEY (station_id),
+    UNIQUE INDEX (station_mac)
 ) ENGINE=INNODB;

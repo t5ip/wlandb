@@ -2,7 +2,9 @@
 
 import argparse 
 import csv
-import mysql.connector 
+import mysql.connector
+#from mysql.connector import Error
+#from mysql.connector import errorcode
 
 parser = argparse.ArgumentParser(description='Read aerodump csv files and write contents to dataabase')
 
@@ -11,6 +13,19 @@ parser.add_argument('csv_filename', metavar='path_to_csv_file', help='A csv file
 args = parser.parse_args()
 
 print(args.csv_filename)
+
+# Open mysql connection.
+
+wlandb = mysql.connector.connect(
+	host="localhost",
+	user="username",
+	password="password",
+    database="wlandb"
+)
+
+dbcursor = wlandb.cursor()
+
+# Read the csv-file and write rows to mysql db
 
 with open(args.csv_filename) as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
@@ -27,12 +42,19 @@ with open(args.csv_filename) as csv_file:
             last_line_of_access_points = line_count - 1;
             break
         else:
-            print(row)
+            #print(row)
+            # Update only time last seen if the entry already exists.
+            # See primary key definition in the sql db schema.
+            sql = "INSERT INTO access_points (bssid, first_time_seen, last_time_seen, privacy, cipher, authentication, essid) VALUES (%s, %s, %s, %s, %s, %s, %s) \
+            ON DUPLICATE KEY UPDATE last_time_seen=%s"
+            val = (row[0], row[1], row[2], row[5], row[6], row[7], row[13], row[2]);
+            #print(val);
+            result = dbcursor.execute(sql, val)
+            wlandb.commit()
             line_count += 1
+            
 
-# Insert rows to database 
-
-
-
+dbcursor.close()
+wlandb.close()
 # todo: start from the row last_line_of_access_points + 2 and 
 # write stations to database in a second table

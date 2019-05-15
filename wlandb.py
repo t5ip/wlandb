@@ -35,7 +35,8 @@ with open(args.csv_filename) as csv_file:
     last_line_of_access_points = 0
 
     for row in csv_reader:
-        if line_count == 0:
+        if line_count < 2:
+            # data starts from the third row
             line_count += 1
         elif len(row) == 0: 
             # List of access points end with an empty line

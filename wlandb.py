@@ -2,6 +2,7 @@
 
 import argparse 
 import csv
+import mysql.connector 
 
 parser = argparse.ArgumentParser(description='Read aerodump csv files and write contents to dataabase')
 
@@ -28,6 +29,8 @@ with open(args.csv_filename) as csv_file:
         else:
             print(row)
             line_count += 1
+
+# Insert rows to database 
 
 
 

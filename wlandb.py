@@ -48,8 +48,12 @@ with open(args.csv_filename) as csv_file:
             # See primary key definition in the sql db schema.
             sql = "INSERT INTO access_points (bssid, first_time_seen, last_time_seen, privacy, cipher, authentication, essid) VALUES (%s, %s, %s, %s, %s, %s, %s) \
             ON DUPLICATE KEY UPDATE last_time_seen=%s"
-            val = (row[0], row[1], row[2], row[5], row[6], row[7], row[13], row[2]);
-            #print(val);
+            if len(row) >= 14:    
+                val = (row[0], row[1], row[2], row[5], row[6], row[7], row[13], row[2]);
+            else:
+                # if name is missing, there's no column 13 in the csv
+                val = (row[0], row[1], row[2], row[5], row[6], row[7], ' ', row[2]);
+            #print(val); #debug
             result = dbcursor.execute(sql, val)
             wlandb.commit()
             line_count += 1
